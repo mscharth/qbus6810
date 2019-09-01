@@ -575,6 +575,15 @@ def plot_additive_local_fit(X, y, model):
     return fig, axes
 
 
+
+def distplot(series):
+    fig, ax= plt.subplots(figsize=(9,6))
+    sns.distplot(series, ax=ax, hist_kws={'alpha': 0.9, 'edgecolor':'black'},  
+        kde_kws={'color': 'black', 'alpha': 0.7})
+    sns.despine()
+    return fig, ax
+
+
 def plot_dist(series):
     fig, ax= plt.subplots(figsize=(9,6))
     sns.distplot(series, ax=ax, hist_kws={'alpha': 0.9, 'edgecolor':'black'},  
