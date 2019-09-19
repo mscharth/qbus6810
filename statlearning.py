@@ -138,7 +138,6 @@ class PCR:
 
 
 def pcrCV(X, y):
-    # Approximate cross-validation
     from sklearn.model_selection import cross_val_score
     
     p=X.shape[1]
@@ -148,7 +147,7 @@ def pcrCV(X, y):
         model = PCR(M=m)
         model.fit(X, y)
         Z=model.pca.transform(X)
-        score = cross_val_score(model.pcr, Z, y, cv=10, scoring='neg_mean_squared_error').mean() 
+        score = cross_val_score(model.pcr, Z, y, cv=5, scoring='neg_mean_squared_error').mean() 
         cv_scores.append(score)
         if score > bestscore:
             bestscore=score
@@ -576,14 +575,6 @@ def plot_additive_local_fit(X, y, model):
 
 
 
-def distplot(series):
-    fig, ax= plt.subplots(figsize=(9,6))
-    sns.distplot(series, ax=ax, hist_kws={'alpha': 0.9, 'edgecolor':'black'},  
-        kde_kws={'color': 'black', 'alpha': 0.7})
-    sns.despine()
-    return fig, ax
-
-
 def plot_dist(series):
     fig, ax= plt.subplots(figsize=(9,6))
     sns.distplot(series, ax=ax, hist_kws={'alpha': 0.9, 'edgecolor':'black'},  
@@ -610,7 +601,6 @@ def plot_dists(X, kde=True):
             ax.set_ylabel('')
             ax.set_title(labels[i])
             ax.set_yticks([])
-            ax.set_xticks([])
         else:
             fig.delaxes(ax)
 
@@ -618,6 +608,8 @@ def plot_dists(X, kde=True):
     plt.tight_layout()
     
     return fig, axes
+
+
 
 
 def plot_correlation_matrix(X):
@@ -858,31 +850,6 @@ def barplots(X):
     return fig, axes
 
 
-def distplots(X, kde=True):
-
-    labels = list(X.columns)
-    
-    N, p = X.shape
-
-    rows = int(np.ceil(p/3)) 
-
-    fig, axes = plt.subplots(rows, 3, figsize=(12, rows*(12/4)))
-
-    for i, ax in enumerate(fig.axes):
-        if i < p:
-            sns.distplot(X.iloc[:,i], ax=ax, kde=kde, hist_kws={'alpha': 0.9, 'edgecolor':'black'},  
-                kde_kws={'color': 'black', 'alpha': 0.7})
-            ax.set_xlabel('')
-            ax.set_ylabel('')
-            ax.set_title(labels[i])
-            ax.set_yticks([])
-        else:
-            fig.delaxes(ax)
-
-    sns.despine()
-    plt.tight_layout()
-    
-    return fig, axes
 
 
 def crosstabplots(X, y):
