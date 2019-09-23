@@ -880,3 +880,39 @@ def crosstabplots(X, y):
     plt.tight_layout()
     
     return fig, axes
+
+
+from sklearn.calibration import calibration_curve
+
+
+def plot_calibration_curves(y_true, y_prob, labels=None):
+    
+    fig, ax = plt.subplots(figsize=(9,6))
+    
+    if y_prob.ndim==1:
+        prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=10)
+        if labels:
+            ax.plot(prob_pred, prob_true, label=labels)
+    else: 
+        m = y_prob.shape[1]
+        for i in range(m):
+            prob_true, prob_pred = calibration_curve(y_true, y_prob[:,i], n_bins=10)
+            if labels:
+                ax.plot(prob_pred, prob_true, label=labels[i])
+            else:
+                ax.plot(prob_pred, prob_true)
+    
+    ax.plot([0,1],[0,1], linestyle='--', color='black', alpha=0.5)
+
+    ax.set_xlabel('Estimated probability')
+    ax.set_ylabel('Empirical probability')
+    if y_prob.ndim==1:
+        ax.set_title('Reliability curve', fontsize=14)
+    else:
+        ax.set_title('Reliability curves', fontsize=14)
+    ax.set_xlim(0,1)
+    ax.set_ylim(0,1)
+    plt.legend(fontsize=13, frameon=False)
+    sns.despine()
+  
+    return fig, ax
