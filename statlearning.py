@@ -1,6 +1,6 @@
 # Python functions for Statistical Learning
 # Author: Marcel Scharth, The University of Sydney Business School
-# This version: 02/06/2019
+
 
 # Imports
 import pandas as pd
